@@ -28,3 +28,4 @@ __pycache__/
 # Temporary tool outputs
 tools/*.jpg
 tools/*.png
+.vercel
