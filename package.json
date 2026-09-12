@@ -15,5 +15,9 @@
   },
   "dependencies": {
     "three": "^0.168.0"
+  },
+  "engines": {
+    "node": "22.x"
   }
 }
+
