@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+.venv/
+
+# Build outputs
+dist/
+.vercel/
+
+# OS and editor files
+.DS_Store
+*.swp
+*.swo
+.vscode/
+.idea/
+
+# Raw pipeline data (large source downloads and intermediates, > 1 GB)
+data/raw/
+data/terrain/
+data/imagery/
+data/build_log.txt
+*.log
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Temporary tool outputs
+tools/*.jpg
+tools/*.png

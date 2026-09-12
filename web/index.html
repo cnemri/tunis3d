@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tunis 3D — تونس</title>
+  <style>
+    :root { --panel: rgba(12, 16, 24, 0.72); --fg: #e9eef5; --accent: #4fb3d9; }
+    html, body { margin: 0; height: 100%; overflow: hidden; background: #0b0e14; font-family: -apple-system, "Segoe UI", Helvetica, Arial, sans-serif; color: var(--fg); }
+    #app { position: fixed; inset: 0; }
+    canvas { display: block; }
+    #hud { position: fixed; left: 14px; top: 14px; padding: 10px 14px; background: var(--panel); border-radius: 10px; backdrop-filter: blur(8px); font-size: 13px; line-height: 1.5; min-width: 250px; pointer-events: none; }
+    #hud h1 { margin: 0 0 4px; font-size: 16px; font-weight: 600; letter-spacing: 0.3px; }
+    #hud .place { color: var(--accent); font-weight: 600; font-size: 14px; }
+    #hud .mono { font-family: ui-monospace, Menlo, monospace; opacity: 0.85; font-size: 12px; }
+    #panel { position: fixed; right: 14px; top: 14px; width: 260px; padding: 12px 14px; background: var(--panel); border-radius: 10px; backdrop-filter: blur(8px); font-size: 13px; }
+    #panel label { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 6px 0; }
+    #panel select, #panel input[type=range] { width: 150px; }
+    #panel select { background: #1c2430; color: var(--fg); border: 1px solid #2c3746; border-radius: 6px; padding: 4px; }
+    #panel h2 { margin: 0 0 8px; font-size: 13px; text-transform: uppercase; letter-spacing: 1px; opacity: 0.7; }
+    #panel .row { display: flex; gap: 6px; flex-wrap: wrap; }
+    #panel button { background: #1c2430; color: var(--fg); border: 1px solid #2c3746; border-radius: 6px; padding: 5px 9px; cursor: pointer; font-size: 12px; }
+    #panel button.active { background: var(--accent); color: #05101a; border-color: var(--accent); }
+    #help { position: fixed; left: 14px; bottom: 14px; padding: 8px 12px; background: var(--panel); border-radius: 10px; font-size: 12px; opacity: 0.85; pointer-events: none; }
+    #help kbd { background: #263040; padding: 1px 5px; border-radius: 4px; font-family: ui-monospace, Menlo, monospace; font-size: 11px; }
+    #minimap { position: fixed; right: 14px; bottom: 14px; width: 220px; height: 220px; border-radius: 10px; overflow: hidden; border: 1px solid #2c3746; background: #111; }
+    #minimap canvas { width: 100%; height: 100%; }
+    #loading { position: fixed; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; background: radial-gradient(ellipse at center, #16314a 0%, #0b0e14 70%); z-index: 10; transition: opacity 0.6s; }
+    #loading h1 { font-size: 34px; margin: 0 0 6px; font-weight: 600; }
+    #loading p { margin: 4px 0; opacity: 0.8; }
+    #loading .bar { width: 320px; height: 6px; background: #1d2633; border-radius: 3px; margin-top: 14px; overflow: hidden; }
+    #loading .bar div { height: 100%; width: 0; background: var(--accent); transition: width 0.2s; }
+    #attrib { position: fixed; right: 240px; bottom: 14px; font-size: 10px; opacity: 0.55; pointer-events: none; }
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+  <div id="loading">
+    <h1>Tunis · تونس</h1>
+    <p>Greater Tunis in 3D — OpenStreetMap buildings on SRTM terrain, satellite-draped</p>
+    <p id="loading-status">Loading terrain…</p>
+    <div class="bar"><div id="loading-bar"></div></div>
+  </div>
+  <div id="hud">
+    <h1>Tunis 3D</h1>
+    <div class="place" id="hud-place">—</div>
+    <div class="mono" id="hud-coords">—</div>
+    <div class="mono" id="hud-alt">—</div>
+    <div class="mono" id="hud-stats">—</div>
+  </div>
+  <div id="panel">
+    <h2>Go to</h2>
+    <select id="goto"><option value="">Landmark…</option></select>
+    <h2 style="margin-top:12px">Navigation</h2>
+    <div class="row">
+      <button id="mode-fly" class="active">Fly</button>
+      <button id="mode-walk">Walk</button>
+      <button id="btn-overview">City overview</button>
+    </div>
+    <h2 style="margin-top:12px">Environment</h2>
+    <label>Time of day <input id="hour" type="range" min="5" max="21" step="0.1" value="10.5" /></label>
+    <label><span>Satellite roofs</span><input id="opt-roofs" type="checkbox" checked /></label>
+    <label><span>Roads</span><input id="opt-roads" type="checkbox" checked /></label>
+    <label><span>Trees</span><input id="opt-trees" type="checkbox" checked /></label>
+    <label><span>Shadows</span><input id="opt-shadows" type="checkbox" checked /></label>
+  </div>
+  <div id="help">
+    <kbd>W</kbd><kbd>A</kbd><kbd>S</kbd><kbd>D</kbd> move · <kbd>Space</kbd>/<kbd>C</kbd> up/down · <kbd>Shift</kbd> fast · <kbd>F</kbd> fly/walk · click to look around · <kbd>Esc</kbd> release mouse
+  </div>
+  <div id="minimap"><canvas id="minimap-canvas" width="440" height="440"></canvas></div>
+  <div id="attrib">© OpenStreetMap contributors · Imagery: Esri World Imagery · Terrain: SRTM via AWS Terrain Tiles</div>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
